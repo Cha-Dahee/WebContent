@@ -9,7 +9,7 @@ table {
 
 td {
 	border: 1px solid gray;
-	padding: 5px;hhhh
+	padding: 5px;
 }
 </style>
 </head>

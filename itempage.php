@@ -28,7 +28,7 @@ function Popup(){
 	window.open('additemToCartResult.html','찜 확인창',features);
 	
 }
-</script>
+</script>ㄴㅇㄻㅎㄹㅇㄴㄹㄴㅇ
 
  <?php
 $conn = mysql_connect ( "localhost", "root", "apmsetup" );
