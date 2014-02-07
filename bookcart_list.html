@@ -1,0 +1,72 @@
+<html>
+
+ <head>
+  <title>장바구니
+  </title>
+  <meta http-equiv='Content-Type' content='text/html'; charset='utf-8'>
+ </head>
+ <body>
+  <h1>도서 장바구니</h1>
+  <table width="100%" border="1">
+   <tbody align="center">
+    <tr>
+    <td>상품명</td>
+    <td>가격</td>
+    <td>수량</td>
+    <td>보관/삭제</td>
+    </tr>
+    <tr>
+   </tbody>
+    <?php
+$conn = mysql_connect ( "localhost", "root", "apmsetup" );
+mysql_query ( 'SET NAMES utf8' );
+if (! $conn) {
+	echo "Unable to connect to DB: " . mysql_error ();
+	exit ();
+}
+
+if (! mysql_select_db ( "book" )) {
+	echo "Unable to select mydbname: " . mysql_error ();
+	exit ();
+}
+
+$sql = "SELECT * 
+        FROM  book_list
+        WHERE 저자='저자1'";
+
+$result = mysql_query ( $sql );
+
+if (! $result) {
+	echo "Could not successfully run query ($sql) from DB: " . mysql_error ();
+	exit ();
+}
+
+if (mysql_num_rows ( $result ) == 0) {
+	echo "No rows found, nothing to print so am exiting";
+	exit ();
+}
+
+// While a row of data exists, put that row in $row as an associative array
+// Note: If you're expecting just one row, no need to use a loop
+// Note: If you put extract($row); inside the following loop, you'll
+// then create $userid, $fullname, and $userstatus
+echo "<table>";
+while ( $row = mysql_fetch_assoc ( $result ) ) {
+	echo "<tr><td>{$row['제목']}</td><td>{$row['ISBN']}</td><td>{$row['저자']}</td><td>{$row['출판사']}</td><td>{$row['원가']}</td><td>{$row['희망가격']}</td></tr>";
+	echo '<form action="InsertCart.php" method="POST" onsubmit="Popup()">';
+	echo '<input type="text" name="ISBN" value='; echo "{$row['ISBN']}>";
+	echo '<input type="text" name="book_title" value='; echo "{$row['제목']}>"; 
+	echo '<input type="text" name="book_author" value='; echo "{$row['저자']}>";
+	echo '<input type="text" name="book_price" value='; echo "{$row['원가']}>";
+	echo '<input type="text" name="hope_price" value='; echo "{$row['희망가격']}>";
+	echo '<input type="text" name="book_publisher" value='; echo "{$row['출판사']}>";
+	echo '<input type="submit" value="장바구니로">';
+	echo '</form>';
+}
+echo "</table>";
+mysql_free_result ( $result );
+?>
+  </table>
+ </body>
+
+</html>
